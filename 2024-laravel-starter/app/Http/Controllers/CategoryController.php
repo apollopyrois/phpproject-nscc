@@ -22,12 +22,12 @@ class CategoryController extends Controller
             'name.unique' => 'Name already exists.',
         ]);
 
-        // Create a new category
+        //creates category
         Category::create([
             'name' => $request->input('name'),
         ]);
 
-        // Redirect to the categories list
+        //redirect
         return redirect()->route('categories.index')->with('success', 'Category created.');
     }
 
@@ -36,5 +36,25 @@ class CategoryController extends Controller
         $categories = Category::all();
         return view('categories.index', compact('categories'));
     }
+
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('categories.edit', compact('category'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->name = $request->input('name');
+        $category->save();
+
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully!');
+    }
+
 }
 

@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories</title>
+    <title>category hell</title>
 </head>
 <body>
-    <h1>Category List</h1>
-    
-    {{ session('success') }}
+    {{--error check--}}
+    @if ($errors->any())
+        <div style="color: red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
+    {{--category resubmit--}}
+    <h2>Category List</h2>
     <ul>
-        @forelse ($categories as $category)
-            <li>{{ $category->name }}</li>
-        @empty
-            <li>No categories available.</li>
-        @endforelse
+        @foreach ($categories as $category)
+            <li>
+                {{ $category->name }}
+                <form action="/categories/{{ $category->id }}/edit" method="GET" style="display: inline;">
+                    <button type="submit">Edit</button>
+                </form>
+            </li>
+        @endforeach
     </ul>
-
-    <a href="{{ route('categories.create') }}">Add another category?</a>
 </body>
 </html>
