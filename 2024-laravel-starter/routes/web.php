@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 
+use App\Http\Controllers\ItemController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -15,3 +17,6 @@ Route::get('/categories/create', [CategoryController::class, 'create'])->name('c
 Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::resource('categories', CategoryController::class);
+
+Route::get('/items/create', [ItemController::class, 'create']);
+Route::post('/items', [ItemController::class, 'store']);

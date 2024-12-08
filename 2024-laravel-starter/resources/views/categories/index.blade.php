@@ -29,5 +29,9 @@
             </li>
         @endforeach
     </ul>
+
+    <div>
+        <a href="/categories/create" style="display: inline-block; margin-bottom: 20px;">Create new category?</a>
+    </div>
 </body>
 </html>
