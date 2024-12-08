@@ -51,4 +51,46 @@ class ItemController extends Controller
         return view('items.index', compact('items'));
     }
 
+    public function edit($id)
+    {
+        $item = Item::findOrFail($id);
+        $categories = Category::all();
+        return view('items.edit', compact('item', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {   
+        //error check
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'sku' => "required|string|max:50|unique:items,sku,$id",
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $item = Item::findOrFail($id);
+
+        //pray unto png god
+        if ($request->hasFile('picture')) {
+            $imagePath = $request->file('picture')->store('images', 'public');
+            $item->picture = $imagePath;
+        }
+
+        //updates item
+        $item->update([
+            'category_id' => $request->category_id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'sku' => $request->sku,
+        ]);
+
+        return redirect()->route('items.index')->with('success', 'Item updated.');
+    }
+
+
 }

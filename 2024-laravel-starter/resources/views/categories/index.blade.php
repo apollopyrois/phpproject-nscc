@@ -8,7 +8,7 @@
 <body>
     {{--error check--}}
     @if ($errors->any())
-        <div style="color: red;">
+        <div>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
