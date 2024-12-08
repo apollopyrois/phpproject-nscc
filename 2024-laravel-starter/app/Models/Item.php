@@ -18,4 +18,10 @@ class Item extends Model
         'sku',
         'picture',
     ];
+
+    //adds the relationship to the category
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

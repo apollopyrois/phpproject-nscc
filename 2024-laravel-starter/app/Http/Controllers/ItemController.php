@@ -44,4 +44,11 @@ class ItemController extends Controller
         //redirect
         return redirect('/items')->with('success', 'Item added successfully!');
     }
+    
+    public function index()
+    {
+        $items = Item::with('category')->get();
+        return view('items.index', compact('items'));
+    }
+
 }

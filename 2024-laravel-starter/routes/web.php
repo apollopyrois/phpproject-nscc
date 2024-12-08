@@ -20,3 +20,5 @@ Route::resource('categories', CategoryController::class);
 
 Route::get('/items/create', [ItemController::class, 'create']);
 Route::post('/items', [ItemController::class, 'store']);
+
+Route::get('/items', [ItemController::class, 'index']);
