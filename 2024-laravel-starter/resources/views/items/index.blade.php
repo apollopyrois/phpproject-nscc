@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product hell</title>
+    {{--not to familiar with javascript so i copied this--}}
+    <script>
+        function confirmDelete(event, itemId) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to delete this item?')) {
+                document.getElementById(`delete-form-${itemId}`).submit();
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Item List</h1>
@@ -24,7 +33,7 @@
                 <th>SKU</th>
                 <th>Category</th>
                 <th>Picture</th>
-                <th></th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -37,10 +46,17 @@
                     <td>{{ $item->sku }}</td>
                     <td>{{ $item->category->name }}</td>
                     <td>
-                        <img src="{{ asset('storage/' . $item->picture) }}" alt="Item Image" width="100">
+                        <img src="{{ asset('storage/app/public/' . $item->picture) }}" alt="Item Image" width="100">
                     </td>
                     <td>
-                        <a href="{{ route('items.edit', $item->id) }}">Edit</a>
+                        <form action="{{ route('items.edit', $item->id) }}" method="GET" style="display: inline;">
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form id="delete-form-{{ $item->id }}" action="{{ route('items.destroy', $item->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="confirmDelete(event, {{ $item->id }})">Delete</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

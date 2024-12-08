@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Item;
 
+use Illuminate\Support\Facades\Storage;
+
 class ItemController extends Controller
 {
     public function create()
@@ -42,7 +44,7 @@ class ItemController extends Controller
         ]);
 
         //redirect
-        return redirect('/items')->with('success', 'Item added successfully!');
+        return redirect('/items')->with('success', 'Item added.');
     }
     
     public function index()
@@ -91,6 +93,19 @@ class ItemController extends Controller
 
         return redirect()->route('items.index')->with('success', 'Item updated.');
     }
+    
+    public function destroy($id)
+    {
+        $item = Item::findOrFail($id);
 
+        //hopefully deletes image file
+        if ($item->picture && Storage::exists('storage/app/public/images' . $item->picture)) {
+            Storage::delete('storage/app/public/images' . $item->picture);
+        }
+
+        $item->delete();
+
+        return redirect()->route('items.index')->with('success', 'Item deleted.');
+    }
 
 }
